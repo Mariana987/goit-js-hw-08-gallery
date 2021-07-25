@@ -67,35 +67,64 @@ const galleryItems = [
 
 const galleryContainer = document.querySelector('.js-gallery');
 console.log(galleryContainer);
+const lightboxRef = document.querySelector('.js-lightbox');
+console.log(lightboxRef)
+const lightboxOverlyRef = document.querySelector('.lightbox__overlay');
+console.log(lightboxOverlyRef)
+const lightboxContentRef = document.querySelector('.lightbox__content');
+console.log(lightboxContentRef)
+const lightboxImageRef = document.querySelector('.lightbox__image');
+console.log(lightboxImageRef)
+const lightboxButtonRef = document.querySelector('.lightbox__button');
+console.log(lightboxButtonRef)
+
+
 
 const galleryCards = createGalleryList(galleryItems);
-galleryContainer.insertAdjacentHTML('afterbegin', galleryCards)
-
-
-
-
+galleryContainer.innerHTML = galleryCards
 
 
 function createGalleryList(galleryItems) {
     const markup = galleryItems
         .map(({ preview, original, description }) => {
             return `
-              < li class="js-gallery__item" >
-            <a
-                class="js-gallery__link"
-                href="${original}" >
-                <img
-                    class="gallery__image"
-                    src="${preview}"
-                    data-source="${original}"
-                    alt="${description}" />
-            </a></li >
-    `;
+            <li class="gallery__item">
+  <a
+    class="gallery__link"
+    href="${original}"
+  >
+    <img
+      class="gallery__image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
+    />
+  </a>
+</li>
+         `;
         })
         .join('');
     return markup
 }
-console.log(createGalleryList(galleryItems))
 
+lightboxImageRef.addEventListener('click', onOpenModal)
+lightboxButtonRef.addEventListener('click', onCloseModal);
+
+function onOpenModal(evt) {
+    evt.preventDefault();
+    if (evt.target.nodeName !== 'IMG') {
+        lightboxRef.classList.add('.is-open');
+        lightboxImageRef.src = e.target.src;
+        lightboxImageRef.alt = e.target.alt;
+        return
+    }
+    console.log(evt.target.nodeName)
+}
+
+function onCloseModal(e) {
+    if (e.target.nodeName === 'I' || e.target.nodeName === 'BUTTON') {
+        lightboxRef.remove('.is-open')
+    }
+}
 
 
