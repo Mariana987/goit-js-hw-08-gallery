@@ -89,8 +89,7 @@ function createGalleryList(galleryItems) {
                     src="${preview}"
                     data-source="${original}"
                     alt="${description}" />
-            </a>
-</li >
+            </a></li >
     `;
         })
         .join('');
