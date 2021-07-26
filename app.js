@@ -65,23 +65,20 @@ const galleryItems = [
 ];
 
 
-const galleryContainer = document.querySelector('.js-gallery');
-console.log(galleryContainer);
+const galleryContainer = document.querySelector('ul.gallery');
 const lightboxRef = document.querySelector('.js-lightbox');
-console.log(lightboxRef)
 const lightboxOverlyRef = document.querySelector('.lightbox__overlay');
-console.log(lightboxOverlyRef)
 const lightboxContentRef = document.querySelector('.lightbox__content');
-console.log(lightboxContentRef)
 const lightboxImageRef = document.querySelector('.lightbox__image');
-console.log(lightboxImageRef)
-const lightboxButtonRef = document.querySelector('.lightbox__button');
-console.log(lightboxButtonRef)
+const lightboxButtonRef = document.querySelector('[data-action="close-lightbox"]');
 
-
+galleryContainer.addEventListener('click', onOpenModal)
+lightboxButtonRef.addEventListener('click', onCloseModal);
+window.addEventListener('keydown', onEscapeModalClose);
+lightboxOverlyRef.addEventListener('click', onOverlayModalClose)
 
 const galleryCards = createGalleryList(galleryItems);
-galleryContainer.innerHTML = galleryCards
+galleryContainer.innerHTML = galleryCards;
 
 
 function createGalleryList(galleryItems) {
@@ -107,24 +104,39 @@ function createGalleryList(galleryItems) {
     return markup
 }
 
-lightboxImageRef.addEventListener('click', onOpenModal)
-lightboxButtonRef.addEventListener('click', onCloseModal);
-
 function onOpenModal(evt) {
     evt.preventDefault();
+
     if (evt.target.nodeName !== 'IMG') {
-        lightboxRef.classList.add('.is-open');
-        lightboxImageRef.src = e.target.src;
-        lightboxImageRef.alt = e.target.alt;
-        return
+        return;
     }
-    console.log(evt.target.nodeName)
+    lightboxRef.classList.add("is-open");
+    lightboxImageRef.src = evt.target.dataset.source;
+    lightboxImageRef.alt = evt.target.alt;
 }
 
 function onCloseModal(e) {
-    if (e.target.nodeName === 'I' || e.target.nodeName === 'BUTTON') {
-        lightboxRef.remove('.is-open')
+    if (e.target.nodeName === 'BUTTON') {
+        removeLightboxClass();
+    }
+    console.log(e.target.nodeName)
+}
+
+function onEscapeModalClose(event) {
+    if (event.key !== 'Escape') {
+        return;
+    }
+    removeLightboxClass();
+}
+
+function onOverlayModalClose(event) {
+    if (event.currentTarget === event.target) {
+        removeLightboxClass();
     }
 }
 
-
+function removeLightboxClass() {
+    lightboxRef.classList.remove("is-open")
+    lightboxImageRef.src = '';
+    lightboxImageRef.alt = '';
+}
